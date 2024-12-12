@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "server"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+package-mode = false
+
+packages = [
+  { include = "src", from = "." }
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.6"
+uvicorn = {extras = ["standard"], version = "^0.32.1"}
+pydantic = "^2.10.3"
+python-dotenv = "^1.0.1"
+sqlalchemy = "^2.0.36"
+psycopg2-binary = "^2.9.10"
+alembic = "^1.14.0"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.13.0"
+types-requests = "^2.32.0.20241016"
+black = "^24.10.0"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
