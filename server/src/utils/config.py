@@ -11,7 +11,7 @@ class DBConfig:
 
     
     def getUrl(self) -> str:
-        return f"postgres://{self.username}:{self.password}@{self.host}:${self.port}/{self.name}"
+        return f"postgresql://{self.username}:{self.password}@{self.host}:{self.port}/{self.name}"
         
 
 class APIConfig:
@@ -24,7 +24,4 @@ class Config:
         load_dotenv()
         self.db = DBConfig()
         self.api = APIConfig()
-        
 
-        
-        

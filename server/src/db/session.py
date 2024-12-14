@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from contextlib import contextmanager
-import os
 from dotenv import load_dotenv
-from src.utils.config import Config
+from utils.config import Config
+import os
 
 load_dotenv()
 
