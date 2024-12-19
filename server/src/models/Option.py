@@ -16,4 +16,7 @@ class Option(Base):
     openInterest = Column(Integer)
     delta = Column(Float)
     gamma = Column(Float)
-    positionSize = Column(Float)
+    positionSize = Column(Float, nullable=True)
+
+    def updateByStrikeAndExpiry(self, data):
+        raise NotImplementedError
