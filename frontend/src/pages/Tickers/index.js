@@ -1,15 +1,13 @@
 import axiosInstance from "../../utils/axios"
 
 export const fetchTickers = () => {
-    axiosInstance.get("", {
-        // 
-    })
+    return axiosInstance.get("/tickers");
 }
 
 export const addTicker = (ticker) => {
     axiosInstance.post("/tickers", {
         ticker,
-    })
+    }).then((it) => console.log(it))
 }   
 
 export const toggleTickerActive = (active, id) => {

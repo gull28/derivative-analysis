@@ -1,11 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from contextlib import contextmanager
-from dotenv import load_dotenv
 from utils.config import Config
 import os
 
-load_dotenv()
 
 config = Config()
 
@@ -22,3 +20,11 @@ def get_db_session():
         yield db
     finally:
         db.close()
+
+def initialize_database():
+    from models.Ticker import Ticker  
+    from models.Option import Option
+    from models.Stock import Stock
+    
+    Base.metadata.create_all(bind=engine)
+    print("Tables created successfully!")
