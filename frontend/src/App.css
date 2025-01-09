@@ -1,14 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
+#root {
+  height: 100%;
+}
 .logo {
   height: 6em;
   padding: 1.5em;

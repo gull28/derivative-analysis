@@ -11,12 +11,15 @@ export const addTicker = (ticker) => {
 }   
 
 export const toggleTickerActive = (active, id) => {
-    axiosInstance.put("/tickers", {
-        active,
-        id
-    })
+    axiosInstance.put(`/toggle/${id}`, {
+    }).then((it) => console.log(it))
 }
 
 export const deleteTicker = (id) => {
     axiosInstance.delete(`/tickers/${id}`)
+}
+
+export const asyncTickerValidation = (ticker) => {
+    throw Error("Not yet implemented!")
+    // axiosInstanc
 }

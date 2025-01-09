@@ -1,11 +1,25 @@
 import React, { useState } from "react";
+import "./components.css";
 
-const ActionToggle = (initialState = false, action) => {
-    const [checked, setChecked] = useState(initialState);
+const ActionToggle = ({ initialState = false, onChange }) => {
+  const [checked, setChecked] = useState(initialState);
 
-    return (
-        <input type="checkbox" checked={checked} onChange={(event) => setChecked(event.target.value)}/>
-    )
-}
+  const handleChange = () => {
+    const newChecked = !checked;
+    setChecked(newChecked);
+    if (onChange) {
+      onChange(newChecked);
+    }
+  };
+
+  return (
+    <div
+      className={`toggle-container ${checked ? "checked" : ""}`}
+      onClick={handleChange}
+    >
+      <div className="toggle-switch" />
+    </div>
+  );
+};
 
 export default ActionToggle;
