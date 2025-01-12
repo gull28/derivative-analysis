@@ -128,28 +128,29 @@ def get_tickers():
 
 @router.post("/tickers")
 def post_tickers(request: TickerRequest):
-
     yahooFinance = YahooFinanceClient(request.ticker)
 
     yahooFinance.fetch()
 
     if not yahooFinance.isValid():
         raise HTTPException(status_code=404, detail="Ticker not found")
-    
 
+    print(request.ticker) 
+    with get_db_session() as session:
+        repo = TickerRepo(session=session)
 
-    # print(request.ticker) 
-    # with get_db_session() as session:
-    #     repo = TickerRepo(session=session)
+        try:
+            ticker = Ticker()
+            ticker.ticker = request.ticker
+            ticker.keepTracking = True
+            repo.addTicker(ticker)
 
-    #     try:
-    #         ticker = Ticker()
-    #         ticker.ticker = request.ticker
-    #         ticker.keepTracking = True
-    #         repo.addTicker(ticker)
+            newTickers = repo.fetchAllTickers()
 
-    #         return [{"message": "Good!!"}]
-    #     except Exception:
-    #         print("error")
+            return {"message": "Good!!", "tickers": newTickers}
+        except Exception:
+            print("error")
+            raise HTTPException(status_code=500, detail="An error occurred")
+
 
 app.include_router(router=router)
