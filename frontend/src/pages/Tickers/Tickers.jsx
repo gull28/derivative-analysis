@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchTickers, addTicker } from ".";
+import { fetchTickers, addTicker, toggleTickerActive } from ".";
 import withData from "../../components/hoc/withData.jsx";
 import ActionToggle from "../../components/ActionToggle.jsx";
 import useTickers from "../../hooks/useTickers.jsx"
@@ -13,7 +13,7 @@ const Tickers = ({ data }) => {
   }
 
   return (
-    <div className="flex flex-row h-full mx-4 md:mx-16 my-20">
+    <div className="flex flex-row h-full mx-4 md:mx-16 my-10">
       <div className="flex flex-col w-1/2 bg-slate text-slate p-4 ml-4">
         <h1 className="text-3xl font-semibold">Ticker list</h1>
         <h3 className="text-lg opacity-75 italic my-2 mb-4">
@@ -26,7 +26,7 @@ const Tickers = ({ data }) => {
                 <ActionToggle
                   initialState={t.keepTracking}
                   onChange={(newState) => {
-                    console.log(`${t.ticker} toggle changed to: ${newState}`);
+                    toggleTickerActive(t.id)
                   }}
                 />
               </div>

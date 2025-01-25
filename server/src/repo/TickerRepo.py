@@ -6,7 +6,7 @@ class TickerRepo:
         self.session = session
 
     def fetchAllTickers(self):
-        return self.session.query(Ticker).all()
+        return self.session.query(Ticker).order_by(Ticker.ticker).all()
     
     def fetchAllTickersToTrack(self):
         return self.session.query(Ticker).filter(Ticker.keepTracking == True).all()
@@ -17,3 +17,15 @@ class TickerRepo:
     def addTicker(self, ticker):
         self.session.add(ticker)
         self.session.commit()
+
+    def toggleTrack(self, tickerId):
+        ticker = self.fetchById(tickerId)
+        
+        if ticker is None:
+            raise ValueError(f"Ticker with id {tickerId} not found")
+        
+        ticker.keepTracking = not ticker.keepTracking
+        
+        self.session.commit()
+        
+        return ticker

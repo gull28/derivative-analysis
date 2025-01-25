@@ -153,4 +153,19 @@ def post_tickers(request: TickerRequest):
             raise HTTPException(status_code=500, detail="An error occurred")
 
 
+@router.put("/tickers/{ticker_id}/toggle")
+def post_tickers(ticker_id: int):
+    
+    with get_db_session() as session:
+        repo = TickerRepo(session=session)
+
+        try:
+            toggledTicker = repo.toggleTrack(ticker_id)
+
+            return {"message": "Tracking toggled", "ticker": toggledTicker}
+        except Exception:
+            print("error")
+            raise HTTPException(status_code=500, detail="An error occurred")
+
+
 app.include_router(router=router)

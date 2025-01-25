@@ -17,8 +17,8 @@ export const addTicker = async (ticker) => {
   }
 };
 
-export const toggleTickerActive = (active, id) => {
-  axiosInstance.put(`/toggle/${id}`, {}).then((it) => console.log(it));
+export const toggleTickerActive = (id) => {
+  axiosInstance.put(`/tickers/${id}/toggle`, {}).then((it) => console.log(it));
 };
 
 export const deleteTicker = (id) => {
