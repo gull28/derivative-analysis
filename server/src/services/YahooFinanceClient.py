@@ -5,6 +5,7 @@ class YahooFinanceClient:
         self.ticker = ticker
         self.options = None
         self.stock = None
+
     
     def fetch(self):
         self.options = yf.Ticker(self.ticker)

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { fetchTickers, addTicker, toggleTickerActive } from ".";
+import { fetchTickers, toggleTickerActive } from ".";
 import withData from "../../components/hoc/withData.jsx";
 import ActionToggle from "../../components/ActionToggle.jsx";
-import useTickers from "../../hooks/useTickers.jsx"
+import useTickers from "../../hooks/useTickers.jsx";
 
 const Tickers = ({ data }) => {
   const [ticker, setTicker] = useState("");
-  const { tickers, addNewTicker, error } = useTickers(data);
+  const { tickers, addNewTicker, deleteticker, error } = useTickers(data);
 
   if (!data) {
     return <div>Loading...</div>;
@@ -19,25 +19,38 @@ const Tickers = ({ data }) => {
         <h3 className="text-lg opacity-75 italic my-2 mb-4">
           Toggle/untoggle the tickers to stop automatic tracking
         </h3>
-        {tickers && tickers.length > 0
-          ? tickers.map((t) => (
-              <div className="flex flex-row items-center my-1" key={t.ticker}>
-                <div className="mr-4 w-16">{t.ticker}</div>
-                <ActionToggle
-                  initialState={t.keepTracking}
-                  onChange={(newState) => {
-                    toggleTickerActive(t.id)
-                  }}
-                />
-              </div>
-            ))
-          : <div>No tickers available</div>}
+        {tickers && tickers.length > 0 ? (
+          tickers.map((t) => (
+            <div className="flex flex-row items-center my-1" key={t.ticker}>
+              <div className="mr-4 w-16">{t.ticker}</div>
+              <ActionToggle
+                initialState={t.keepTracking}
+                onChange={(newState) => {
+                  toggleTickerActive(t.id);
+                }}
+              />
+              <div
+                onClick={async () => {
+                  try {
+                    await deleteticker(t.id);
+                  } catch (error) {
+                    console.error("Failed to delete ticker:", error);
+                  }
+                }}
+                className="px-2 cursor-pointer mx-2 py-1 border border-red-600 bg-red-600"
+              ></div>
+            </div>
+          ))
+        ) : (
+          <div>No tickers available</div>
+        )}
       </div>
 
       <div className="flex flex-col w-1/2 p-4">
         <h1 className="text-3xl font-semibold">Add a ticker to track</h1>
         <h3 className="text-lg opacity-75 italic my-2 mb-4">
-          Add a ticker from any stock exchange to track the gamma and delta exposure
+          Add a ticker from any stock exchange to track the gamma and delta
+          exposure
         </h3>
         <form className="flex flex-col items-start">
           {error && <div className="text-red-500 mb-2">{error}</div>}

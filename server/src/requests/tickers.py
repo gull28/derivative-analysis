@@ -5,3 +5,6 @@ class AddTickerRequest(BaseModel):
 
 class RemoveTickerRequest(BaseModel):
     id: int
+
+class TickerRequest(BaseModel):
+    ticker: str

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchTickers, addTicker } from "../pages/Tickers/index.js"
+import { fetchTickers, addTicker, deleteTicker } from "../pages/Tickers/index.js"
 
 const useTickers = (initialData) => {
   const [tickers, setTickers] = useState(initialData?.tickers || []);
@@ -15,6 +15,23 @@ const useTickers = (initialData) => {
 
   const toggleTicker = async () => {
     //
+  }
+
+  const deleteticker = async (tickerId) => {
+    try {
+      const response = await deleteTicker(tickerId);
+      console.log("tickers", response)
+
+      if (response?.tickers) {
+        setError("")
+        setTickers(response.tickers);
+        return response;
+      }
+      throw new Error("Unexpected response structure");
+    } catch (error) {
+      setError("Failed to add ticker. Please try again.");
+      throw error;
+    }
   }
 
 
@@ -33,7 +50,7 @@ const useTickers = (initialData) => {
     }
   };
 
-  return { tickers, setTickers, addNewTicker, error };
+  return { tickers, setTickers, deleteticker, addNewTicker, error };
 };
 
 export default useTickers;

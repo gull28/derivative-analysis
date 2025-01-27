@@ -18,6 +18,18 @@ class TickerRepo:
         self.session.add(ticker)
         self.session.commit()
 
+    def deleteTicker(self, tickerId):
+        ticker = self.fetchById(tickerId)
+        
+        if ticker is None:
+            raise ValueError(f"Ticker with id {tickerId} not found")
+        
+        self.session.delete(ticker)
+        self.session.commit()
+        
+        return ticker
+        
+        
     def toggleTrack(self, tickerId):
         ticker = self.fetchById(tickerId)
         
@@ -29,3 +41,4 @@ class TickerRepo:
         self.session.commit()
         
         return ticker
+    

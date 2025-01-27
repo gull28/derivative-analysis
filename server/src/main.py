@@ -10,6 +10,7 @@ from repo.TickerRepo import TickerRepo
 from pydantic import BaseModel
 from models.Ticker import Ticker
 from fastapi import HTTPException
+from routers import tickers
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -86,7 +87,6 @@ async def fetch_data():
             
             for _, row in puts_df.iterrows():
 
-                # stock = 
                 put = {
                     "stock_id": None,
                     "strikePrice": row["strike"],
@@ -110,62 +110,5 @@ async def schedule_fetch_data():
         await asyncio.sleep(120)
 
 
-@router.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
 
-
-@router.get("/tickers")
-def get_tickers():
-    with get_db_session() as session:
-        repo = TickerRepo(session=session)
-
-        tickers = repo.fetchAllTickers()
-
-        return {"tickers": tickers}
-
-
-
-@router.post("/tickers")
-def post_tickers(request: TickerRequest):
-    yahooFinance = YahooFinanceClient(request.ticker)
-
-    yahooFinance.fetch()
-
-    if not yahooFinance.isValid():
-        raise HTTPException(status_code=404, detail="Ticker not found")
-
-    print(request.ticker) 
-    with get_db_session() as session:
-        repo = TickerRepo(session=session)
-
-        try:
-            ticker = Ticker()
-            ticker.ticker = request.ticker
-            ticker.keepTracking = True
-            repo.addTicker(ticker)
-
-            newTickers = repo.fetchAllTickers()
-
-            return {"message": "Good!!", "tickers": newTickers}
-        except Exception:
-            print("error")
-            raise HTTPException(status_code=500, detail="An error occurred")
-
-
-@router.put("/tickers/{ticker_id}/toggle")
-def post_tickers(ticker_id: int):
-    
-    with get_db_session() as session:
-        repo = TickerRepo(session=session)
-
-        try:
-            toggledTicker = repo.toggleTrack(ticker_id)
-
-            return {"message": "Tracking toggled", "ticker": toggledTicker}
-        except Exception:
-            print("error")
-            raise HTTPException(status_code=500, detail="An error occurred")
-
-
-app.include_router(router=router)
+app.include_router(router=tickers.router)
