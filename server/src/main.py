@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from models.Ticker import Ticker
 from fastapi import HTTPException
 from routers import tickers
-
+import yfinance as yf
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
@@ -48,9 +48,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
 yahooFinance = YahooFinanceClient("MSFT")
-
 
 async def fetch_data():
     print("here")
@@ -82,7 +80,7 @@ async def fetch_data():
                     "openInterest": row["openInterest"],
                     "delta": None,
                     "gamma": None,
-                    "positionSize": None
+                    "positionSize": None,
                 }
             
             for _, row in puts_df.iterrows():

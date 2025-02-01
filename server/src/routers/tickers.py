@@ -8,8 +8,8 @@ from repo.TickerRepo import TickerRepo
 from pydantic import BaseModel
 from models.Ticker import Ticker
 from fastapi import HTTPException
-from requests.tickers import AddTickerRequest
 from services.YahooFinanceClient import YahooFinanceClient
+from request.tickers import AddTickerRequest
 
 router = APIRouter(
     prefix="/tickers",
@@ -43,7 +43,7 @@ def post_tickers(request: AddTickerRequest):
 
         try:
             ticker = Ticker()
-            ticker.ticker = request.ticker.capitalize()
+            ticker.ticker = request.ticker.upper()
             ticker.keepTracking = True
             repo.addTicker(ticker)
 
